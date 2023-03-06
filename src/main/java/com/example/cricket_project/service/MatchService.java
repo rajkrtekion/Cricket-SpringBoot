@@ -3,6 +3,7 @@ package com.example.cricket_project.service;
 import com.example.cricket_project.DTO.MatchInfo;
 import com.example.cricket_project.Documents.Match;
 import com.example.cricket_project.Documents.ScoreCard;
+import com.example.cricket_project.ServiceComponents.GameService;
 import com.example.cricket_project.repository.MatchRepository;
 import com.example.cricket_project.repository.ScoreCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,10 @@ public class MatchService {
     @Autowired
     private GameService game;
 
+    @Autowired
+    private TeamService teamService;
+    @Autowired
+    private PlayerService playerService;
 
     public Match startMatch(MatchInfo matchInfo){
          game.setGame(matchInfo);
@@ -24,6 +29,8 @@ public class MatchService {
 
          matchRepository.save(game.getMatch());
          scoreCardRepository.save(game.getScoreCard());
+         teamService.saveMatch(game.getMatch());
+         playerService.setPlayerStats(game.getScoreCard());
 
          return game.getMatch();
     }

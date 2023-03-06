@@ -21,26 +21,15 @@ public class Match {
 
     @Id
     private long matchId;
+    private long team1Id;
+    private long team2Id;
     private String team1Name;
     private String team2Name;
-    private int noOfPlayers;
+//  private int noOfPlayers;
     private int overs;
     private String tossWinner;
     private String team1Score;
     private String team2Score;
     private String winner;
 
-    @Override
-    public String toString() {
-        return "Match{" +
-                "matchId=" + matchId +
-                ", teamId1='" + team1Name + '\'' +
-                ", teamId2='" + team2Name + '\'' +
-                ", overs=" + overs +
-                ", tossWinner=" + tossWinner +
-                ", team1Score='" + team1Score + '\'' +
-                ", team2Score='" + team2Score + '\'' +
-                ", winner='" + winner + '\'' +
-                '}';
-    }
 }

@@ -7,9 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MatchInfo {
-    private String team1Name;
-    private String team2Name;
-    private int overs;
-//   private int noOfPlayers;
+public class PlayerInfo {
+    private String playerName;
+    private String playerType;
+    private int age;
 }

@@ -1,7 +1,6 @@
 package com.example.cricket_project.configuration;
 import com.example.cricket_project.Documents.Match;
 import com.example.cricket_project.Documents.ScoreCard;
-import com.example.cricket_project.service.GameService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

@@ -1,34 +1,39 @@
-package com.example.cricket_project.service;
+package com.example.cricket_project.ServiceComponents;
 
 import com.example.cricket_project.DTO.MatchInfo;
 import com.example.cricket_project.Documents.Match;
 import com.example.cricket_project.Documents.ScoreCard;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.example.cricket_project.SequenceGenerator.MatchSequenceGeneratorService;
+import com.example.cricket_project.ServiceComponents.PlayGameService;
+import com.example.cricket_project.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class GameService {
     @Autowired
+    private TeamRepository teamRepository;
+    @Autowired
     private Match match;
     @Autowired
     private ScoreCard scoreCard;
     @Autowired
-    private SequenceGeneratorService sequenceGeneratorService;
+    private MatchSequenceGeneratorService sequenceGeneratorService;
 
 
-    private PlayGame playgame1=new PlayGame();
+    private PlayGameService playgame1=new PlayGameService();
 
-    private PlayGame playgame2=new PlayGame();
+    private PlayGameService playgame2=new PlayGameService();
 
     public long  setGame(MatchInfo matchInfo){
         match.setMatchId(sequenceGeneratorService.generateSequence(Match.SEQUENCE_NAME));
+
+        match.setTeam1Id(teamRepository.findByTeamName(matchInfo.getTeam1Name()).getTeamId());
+        match.setTeam2Id(teamRepository.findByTeamName(matchInfo.getTeam2Name()).getTeamId());
         match.setTeam1Name(matchInfo.getTeam1Name());
         match.setTeam2Name(matchInfo.getTeam2Name());
         match.setOvers(matchInfo.getOvers());
-        match.setNoOfPlayers(matchInfo.getNoOfPlayers());
+//      match.setNoOfPlayers(matchInfo.getNoOfPlayers());
 
         return match.getMatchId();
     }
@@ -43,12 +48,12 @@ public class GameService {
             match.setTossWinner(match.getTeam1Name());
 
             //Team-1 Playing
-            playgame1.setGame(match.getOvers(), match.getNoOfPlayers(), Integer.MAX_VALUE);
+            playgame1.setGame(match.getOvers(), Integer.MAX_VALUE);
             match.setTeam1Score(playgame1.play());
             team1Score=playgame1.getScore();
 
             //Team-2 Playing
-            playgame2.setGame(match.getOvers(), match.getNoOfPlayers(), team1Score);
+            playgame2.setGame(match.getOvers(),team1Score);
             match.setTeam2Score(playgame2.play());
             team2Score=playgame2.getScore();
         }
@@ -56,12 +61,12 @@ public class GameService {
             match.setTossWinner(match.getTeam2Name());
 
             //Team-2 Playing
-            playgame2.setGame(match.getOvers(), match.getNoOfPlayers(), Integer.MAX_VALUE);
+            playgame2.setGame(match.getOvers(),Integer.MAX_VALUE);
             match.setTeam2Score(playgame2.play());
             team2Score = playgame2.getScore();
 
             //Team-1 Playing
-            playgame1.setGame(match.getOvers(), match.getNoOfPlayers(), team2Score);
+            playgame1.setGame(match.getOvers(),team2Score);
             match.setTeam1Score(playgame1.play());
             team1Score = playgame1.getScore();
         }
@@ -74,6 +79,8 @@ public class GameService {
 
         //Setting ScoreCard
         scoreCard.setScoreCardId(match.getMatchId());
+        scoreCard.setTeam1Id(match.getTeam1Id());
+        scoreCard.setTeam2Id(match.getTeam2Id());
         scoreCard.setTeam1(match.getTeam1Name());
         scoreCard.setTeam2(match.getTeam2Name());
         scoreCard.setTossWinner(match.getTossWinner());

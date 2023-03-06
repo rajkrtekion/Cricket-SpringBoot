@@ -16,6 +16,9 @@ import java.util.List;
 public class ScoreCard {
     @Id
     private long scoreCardId;
+
+    private long team1Id;
+    private long team2Id;
     private String team1;
     private String team2;
     private String tossWinner;

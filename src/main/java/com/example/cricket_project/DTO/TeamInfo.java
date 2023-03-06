@@ -4,12 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MatchInfo {
-    private String team1Name;
-    private String team2Name;
-    private int overs;
-//   private int noOfPlayers;
+public class TeamInfo {
+    private String teamName;
+    private List<Long> currentPlayers;
 }
